@@ -6,6 +6,8 @@
 
 Python 3.10+, Git and a Codex, Claude Code or Qoder installation supporting plugin marketplaces are required. Make sure the host is signed in or has its model configuration set up and is working normally. The platform is optional.
 
+Using **DingTalk documents as a requirement source** additionally requires `dws` (dingtalk-workspace-cli) on `PATH` and a completed `dws auth login`; nothing else needs it, and the plugin works without it.
+
 The examples use Bash/Zsh. `didi/helixharness` is the planned public repository; remote commands become usable after its publication. For testing before publication or modifying the plugin, use [developer installation](#developer-installation).
 
 This edition uses only the HelixHarness identifiers: `helix@helixharness-marketplace`, `/helix:*`, `.helixharness/`, `helixharness.workspace.yaml`, and `HELIXHARNESS_*` environment variables. It does not recognize or migrate identifiers, configuration or runtime data from previous branding. Initialize a fresh application copy when validating this edition.
@@ -94,6 +96,8 @@ Use the host's plugin management to uninstall `helix@helixharness-marketplace`. 
 ## 中文说明
 
 需要 Python 3.10+、Git，以及支持插件市场的 Codex、Claude Code 或 Qoder。先确保宿主已完成登录或模型配置，能够正常使用。平台不是安装插件的前置条件。
+
+**把钉钉文档作为需求来源**时，额外需要 `dws`（dingtalk-workspace-cli）在 `PATH` 中并完成 `dws auth login`；其余功能不依赖它。
 
 正式发布后使用上面的 GitHub 安装命令，无需先手动克隆源码。发布前测试或修改插件时，使用[开发者安装（本地源码）](#developer-installation)：先下载或克隆源码，再从**包含两个子项目的根目录**添加本地市场。根市场指向 `./helixharness`，不会安装平台。独立插件副本仍可添加插件目录本身；同名市场只保留一个来源。
 

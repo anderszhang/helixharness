@@ -50,6 +50,25 @@ class ReferenceContractsTest(unittest.TestCase):
         for retired_stage in ('propose Phase 1', 'propose Phase 2', '| verify |'):
             self.assertNotIn(retired_stage, protocol)
 
+    def test_requirement_source_protocol_is_referenced_by_callers(self):
+        protocol = (ROOT / 'reference/requirement-source-protocol.md').read_text()
+        for section in ('## 2. 钉钉文档 URL 白名单', '## 3. 读取流程（钉钉文档）',
+                        '## 4. 失败不变量'):
+            self.assertIn(section, protocol)
+        for workflow in ('workflows/single/propose.md',
+                         'workflows/workspace/propose.md',
+                         'workflows/single/bug-fix.md'):
+            text = (ROOT / workflow).read_text()
+            self.assertIn('reference/requirement-source-protocol.md', text, workflow)
+        script = (ROOT / 'scripts/requirement_source.py').read_text()
+        for subcommand in ('classify', 'plan', 'ingest', 'diagnose'):
+            self.assertIn(f'"{subcommand}"', script)
+        # The snapshot manifest must never carry identity or credentials.
+        for forbidden in ('corp_id', 'user_id', 'user_name', 'token'):
+            self.assertIn(forbidden, protocol)
+        self.assertIn('不得**保存', protocol)
+        self.assertIn('dws auth status', protocol)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -195,6 +195,16 @@ flowchart LR
 
 `propose` 接受需求文字、文件路径或可访问 URL。
 
+需求来源是**钉钉文档**时（形如 `https://alidocs.dingtalk.com/i/nodes/<nodeId>`），HelixHarness 通过 `dws`（dingtalk-workspace-cli）读取正文与评论，需要本机已安装 `dws` 并完成 `dws auth login`：
+
+```text
+/helix:propose cat-ear-member https://alidocs.dingtalk.com/i/nodes/QG53mjyd80RNO2DoHe70abNBV6zbX04v
+```
+
+- 只支持 `adoc` 类型文档（白板、表格、脑图不支持）；浏览器复制的追踪参数会被自动剥离。
+- 正文快照保存在业务仓库的私有目录 `.helixharness/sources/<feature>/`，**不随仓库提交**；`spec.md` 的 `## Source` 段记录标题、nodeId、抓取时间与内容摘要。
+- `dws` 未安装、未登录、无权限、文档不存在或超过 512 KiB 时命令会明确阻断并给出对应原因，不会把 URL 当需求正文。
+
 `ut` 可以交互选择范围，也可以一次指定包和并发数：
 
 ```text

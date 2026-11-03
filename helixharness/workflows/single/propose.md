@@ -130,7 +130,23 @@ Apply 基线的仓回到 applying。完成上述校验后本 Propose job 即结�
 
 不满足时停止，不覆盖或迁移既有工件。
 
-需求来源是文件路径或 URL 时，必须先完整读取 source（包括可见批注/评论），把其内容作为需求事实来源；路径或 URL 不可读时明确阻断，不能把路径字符串本身当需求正文。直接描述则以用户原文为初始 source。
+需求来源按 `reference/requirement-source-protocol.md` 解析，不得自行猜测类型：
+
+1. `python3 {plugin_root}/scripts/requirement_source.py classify --source "<source>"` 得到
+   `kind`（`text` / `file` / `dingtalk_doc` / `url`）。
+2. `kind=text` 时以用户原文为初始 source；`kind=file` 时完整读取该文件（含可见批注/评论）。
+3. `kind=dingtalk_doc`（钉钉文档）时按协议执行：先用
+   `python3 {plugin_root}/scripts/requirement_source.py plan --source "<source>" --feature "{feature}" --repo-root "{repo_root}"`
+   取得 argv 计划，再用 `run_command` 逐条执行；命令失败时用
+   `requirement_source.py diagnose --stderr-file <f> --exit-code <n>` 取得 reason 并
+   `BLOCKED:<reason>`。成功后用 `requirement_source.py ingest ...`（带 `--version-file` 与
+   `--fetched-at`）写入私有快照，并把快照中的 `document.md` 与 `comments.json` 作为需求事实
+   来源。`ingest` 返回的 JSON 是 Spec `## Source` 段的唯一字段来源，不得手写；`ingest` 会自动删除原始捕获
+   文件，快照目录只留 `document.md` / `comments.json` / `manifest.json`。
+4. `kind=url`（非钉钉）沿用宿主既有读取能力；不可读时阻断。
+
+无论哪类，source 不可读时必须明确阻断，不能把路径或 URL 字符串本身当需求正文。
+钉钉文档的溯源段写入 Spec 的 `## Source`，正文快照留在私有目录，不写入 Spec/Tasks。
 
 
 

@@ -194,6 +194,16 @@ There are nine public commands. `--loop` is an option on `propose`.
 
 `propose` accepts requirement text, a file path, or an accessible URL.
 
+When the source is a **DingTalk document** (`https://alidocs.dingtalk.com/i/nodes/<nodeId>`), HelixHarness reads its body and comments through `dws` (dingtalk-workspace-cli). The machine needs `dws` installed and signed in with `dws auth login`:
+
+```text
+/helix:propose cat-ear-member https://alidocs.dingtalk.com/i/nodes/QG53mjyd80RNO2DoHe70abNBV6zbX04v
+```
+
+- Only `adoc` documents are supported (whiteboards, sheets and mind maps are not); tracking parameters copied from a browser are stripped.
+- The body snapshot is stored in the private `.helixharness/sources/<feature>/` directory and is **not committed**; the `## Source` section of `spec.md` records the title, nodeId, fetch time and a content digest.
+- When `dws` is missing or not signed in, the document is unavailable, or it exceeds 512 KiB, the command blocks with a specific reason instead of treating the URL as requirement text.
+
 `ut` can ask for the scope interactively, or you can specify packages and concurrency together:
 
 ```text

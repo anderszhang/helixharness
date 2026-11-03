@@ -26,7 +26,7 @@ Git operation、正在执行的 task、不同修订的未完成 Repair state 或
 
 ## 2. 加载 source 并建立稳定修订身份
 
-description 是文件路径或 URL 时必须完整读取可见内容；不可读时停止，不能把 locator 字符串当正文。直接文本以原文为内容。canonical content 只统一换行符为 LF 并去除整段首尾空白，内部空白和文字保持不变。
+description 是文件路径或钉钉文档 URL 时按 `reference/requirement-source-protocol.md` 完整读取可见内容（钉钉文档须连同评论一并作为问题事实）；其他 URL 沿用宿主既有读取能力。不可读时停止，不能把 locator 字符串当正文。直接文本以原文为内容。canonical content 只统一换行符为 LF 并去除整段首尾空白，内部空白和文字保持不变。
 
 ```text
 source_sha256 = SHA-256(canonical content)

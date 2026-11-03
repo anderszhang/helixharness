@@ -6,6 +6,10 @@ description: "Workspace Propose：生成唯一跨仓概要设计，并调度各�
 
 仅当公共 Router 返回 `execution_scope=workspace` 时执行本工作流。本工作流只负责跨仓协调；每个子仓通过公共命令路由到 `workflows/single/propose.md` 处理本仓业务，Coordinator 不代写子仓工件。
 
+需求来源按 `reference/requirement-source-protocol.md` 解析；根 Spec 只记录溯源
+（`## Source`），文档正文快照属于发起解析的仓库，不复制到 Workspace 根。
+每个子仓按其 RepoJob 拿到 `source` 后自行处理；钉钉文档来源不得把根快照当作子仓 source。
+
 第一次派发子仓前，必须完整读取并执行 `reference/workspace-repo-dispatch.md`、`reference/subagent-runtime-protocol.md` 与当前 Host Context 的 `resources.subagent_protocol`。`workspace-plan` 返回的结构化 RepoJob 是本流程的 Dispatch Contract；必须通过 Host Kit 的 `spawn_job` / `wait_job` 映射实际派发、校验 Router identity、等待原生终态并执行父级 completion check，不能把 slash-command 字符串当 shell 命令或仅展示给用户。
 
 ## 1. 身份与安全前置
